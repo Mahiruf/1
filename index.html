@@ -2,13 +2,14 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="赛博女友">
 <meta name="theme-color" content="#fcfcf9">
 <meta name="description" content="你的AI女友">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='192' height='192'><rect width='192' height='192' rx='32' fill='%23f08ca8'/><text x='96' y='120' text-anchor='middle' font-size='100'>💝</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' rx='12' fill='%23f08ca8'/><text x='32' y='44' text-anchor='middle' font-size='36'>💝</text></svg>">
+<link rel="manifest" href="manifest.json">
 <title>赛博女友</title>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11/styles/atom-one-dark.min.css">
@@ -200,26 +201,26 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 
 /* ====== 手机端微信风格 ====== */
 @media(max-width:768px){
-  body{background:#ededed;font-size:15px}
+  body{background:#ededed;font-size:15px;height:100dvh;height:100vh}
   .petals{display:none}
-  .app-wrap{max-width:100%;box-shadow:none}
+  .app-wrap{max-width:100%;box-shadow:none;height:100dvh;height:100vh}
   .sidebar{position:fixed;left:0;top:0;bottom:0;z-index:100;transform:translateX(-100%);width:100%;max-width:320px}
   .sidebar.open{transform:translateX(0);box-shadow:4px 0 30px rgba(0,0,0,.2)}
   .menu-btn{display:flex;align-items:center;justify-content:center}
 
   .main{background:#ededed}
   .main::before{display:none}
-  .main-inner{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .main-inner{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;overflow:hidden}
   .bg-character{display:none!important}
   .corner-deco{display:none}
 
-  .topbar{padding:8px 12px;gap:8px;background:#ededed;border-bottom:1px solid #d9d9d9}
+  .topbar{padding:8px 12px;gap:8px;background:#ededed;border-bottom:1px solid #d9d9d9;flex-shrink:0}
   .topbar .name{font-size:16px;font-weight:500}
   .topbar .avatar-wrap{width:36px;height:36px}
   .topbar .btn-icon{display:none}
   .topbar .info{cursor:pointer}
 
-  .messages{padding:12px 10px;gap:8px}
+  .messages{padding:12px 10px;gap:8px;flex:1;overflow-y:auto}
   .msg-row{max-width:90%}
   .msg-row .head{width:34px;height:34px;font-size:18px}
   .bubble{padding:10px 13px;font-size:15px;line-height:1.55}
@@ -230,7 +231,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
   .typing-row .dots{background:#fff;border:1px solid #e5e5e5}
   .typing-row .dots span{background:#c0c0c0}
 
-  .input-area{padding:8px 10px;gap:6px;background:#f7f7f7;border-top:1px solid #d9d9d9}
+  .input-area{padding:8px 10px;gap:6px;background:#f7f7f7;border-top:1px solid #d9d9d9;flex-shrink:0;position:relative;z-index:5}
   .input-area textarea{font-size:16px;padding:8px 12px;border-radius:6px;background:#fff;border:1px solid #e0e0e0}
   .input-area .btn{width:36px;height:36px;border-radius:6px;font-size:17px}
   .btn-send{background:#07c160;color:#fff;border:none}
@@ -1586,20 +1587,8 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden){data.last
   startCornerDecos();
 })();
 
-// ==================== PWA ====================
-// 动态注入manifest
-(function(){
-  const manifest={name:'赛博女友',short_name:'赛博女友',start_url:'.',display:'standalone',background_color:'#ededed',theme_color:'#07c160',icons:[{src:'data:image/svg+xml,'+encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' width='192' height='192'><rect width='192' height='192' rx='32' fill='%23f08ca8'/><text x='96' y='120' text-anchor='middle' font-size='100'>💝</text></svg>"),sizes:'192x192',type:'image/svg+xml'}]};
-  const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
-  const link=document.createElement('link');link.rel='manifest';link.href=URL.createObjectURL(blob);document.head.appendChild(link);
-})();
-
-// Service Worker：离线缓存
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register("data:application/javascript,"+encodeURIComponent(
-    "const C='cyber-gf-v1';self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(['.'])).catch(()=>{}));self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))));self.clients.claim();});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(resp=>{if(resp.ok){const clone=resp.clone();caches.open(C).then(c=>c.put(e.request,clone));}return resp;})));});"
-  )).catch(()=>{});
-}
+// Service Worker
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
 </script>
 </body>
 </html>
