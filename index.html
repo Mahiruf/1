@@ -201,16 +201,17 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 
 /* ====== 手机端微信风格 ====== */
 @media(max-width:768px){
-  body{background:#ededed;font-size:15px;height:100dvh;height:100vh}
+  :root{--input-h:52px}
+  body{background:#ededed;font-size:15px}
   .petals{display:none}
-  .app-wrap{max-width:100%;box-shadow:none;height:100dvh;height:100vh}
+  .app-wrap{max-width:100%;box-shadow:none}
   .sidebar{position:fixed;left:0;top:0;bottom:0;z-index:100;transform:translateX(-100%);width:100%;max-width:320px}
   .sidebar.open{transform:translateX(0);box-shadow:4px 0 30px rgba(0,0,0,.2)}
   .menu-btn{display:flex;align-items:center;justify-content:center}
 
   .main{background:#ededed}
   .main::before{display:none}
-  .main-inner{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;overflow:hidden}
+  .main-inner{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}
   .bg-character{display:none!important}
   .corner-deco{display:none}
 
@@ -220,7 +221,8 @@ input[type=range]{width:100%;accent-color:var(--accent)}
   .topbar .btn-icon{display:none}
   .topbar .info{cursor:pointer}
 
-  .messages{padding:12px 10px;gap:8px;flex:1;overflow-y:auto}
+  .messages{padding:12px 10px 62px 10px;gap:8px;flex:1;overflow-y:auto}
+
   .msg-row{max-width:90%}
   .msg-row .head{width:34px;height:34px;font-size:18px}
   .bubble{padding:10px 13px;font-size:15px;line-height:1.55}
@@ -228,10 +230,11 @@ input[type=range]{width:100%;accent-color:var(--accent)}
   .msg-row.me .bubble{background:#95ec69;border:none;border-radius:14px 4px 14px 14px;color:#111}
   .msg-row .narration{font-size:13px;color:#b0b0b0;margin:2px 8px}
 
+  .typing-row{padding-bottom:52px}
   .typing-row .dots{background:#fff;border:1px solid #e5e5e5}
   .typing-row .dots span{background:#c0c0c0}
 
-  .input-area{padding:8px 10px;gap:6px;background:#f7f7f7;border-top:1px solid #d9d9d9;flex-shrink:0;position:relative;z-index:5}
+  .input-area{padding:8px 10px;gap:6px;background:#f7f7f7;border-top:1px solid #d9d9d9;position:fixed;bottom:0;left:0;right:0;z-index:50;max-width:100%}
   .input-area textarea{font-size:16px;padding:8px 12px;border-radius:6px;background:#fff;border:1px solid #e0e0e0}
   .input-area .btn{width:36px;height:36px;border-radius:6px;font-size:17px}
   .btn-send{background:#07c160;color:#fff;border:none}
@@ -245,7 +248,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
   .time-divider{margin:10px 0;font-size:10px}
   .time-divider span{background:rgba(0,0,0,.04);color:#aaa}
 
-  .empty-state{margin-top:30vh}
+  .empty-state{margin-top:20vh}
   .heart-pop{right:0;top:40px}
 }
 </style>
