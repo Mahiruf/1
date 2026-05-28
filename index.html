@@ -278,7 +278,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 <div class="main-inner">
 
   <div class="topbar">
-    <button class="menu-btn" onclick="toggleMobileMenu()">☰</button>
+    <button class="menu-btn" onclick="toggleMobileMenu(event)">☰</button>
     <div class="mobile-menu" id="mobileMenu" style="display:none">
       <button onclick="openPersona();closeMobileMenu()">✏️ 修改人设</button>
       <button onclick="openAvatarPicker();closeMobileMenu()">🖼 更换头像</button>
@@ -1196,8 +1196,9 @@ function newSession(){if(isBusy)return;const s={id:genId(),name:'新对话',mess
 function switchSession(id){if(isBusy)return;currentSession=data.sessions.find(s=>s.id===id);data.activeId=id;saveData(data);renderMessages();renderSessions();scrollBottom();}
 function deleteSession(id){if(isBusy||data.sessions.length<=1)return;data.sessions=data.sessions.filter(s=>s.id!==id);if(currentSession?.id===id){currentSession=data.sessions[0];data.activeId=currentSession.id;}saveData(data);renderMessages();renderSessions();}
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
-function toggleMobileMenu(){var m=document.getElementById('mobileMenu');if(!m)return;m.style.display=m.style.display==='block'?'none':'block';}
+function toggleMobileMenu(e){e.stopPropagation();var m=document.getElementById('mobileMenu');if(!m)return;m.style.display=m.style.display==='block'?'none':'block';}
 function closeMobileMenu(){var m=document.getElementById('mobileMenu');if(m)m.style.display='none';}
+document.addEventListener('click',function(){closeMobileMenu();});
 
 // ==================== 表情包面板 ====================
 function toggleStickerPanel(){stickerPanelOpen?closeStickerPanel():openStickerPanel();}
