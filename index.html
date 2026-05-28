@@ -285,6 +285,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
       <button onclick="openSearch();closeMobileMenu()">🔍 搜索记录</button>
       <button onclick="toggleSidebar();closeMobileMenu()">💬 会话列表</button>
       <button onclick="openSettings();closeMobileMenu()">⚙ 设置</button>
+      <button onclick="installPWA()" style="color:#07c160;font-weight:500">📲 添加到桌面</button>
     </div>
     <div class="avatar-wrap" id="avatarTopWrap" onclick="openAvatarPicker()" title="点击换头像">
       <img id="avatarTopImg" src="" style="display:none"><span id="avatarTopEmoji">🌸</span>
@@ -1626,8 +1627,14 @@ var _openCropModal=openCropModal;openCropModal=function(t,s){_openCropModal(t,s)
   startCornerDecos();
 })();
 
-// Service Worker
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
+// Service Worker + PWA Install
+var deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;});
+function installPWA(){
+  if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(r){deferredPrompt=null;});closeMobileMenu();}
+  else{toast('请通过Chrome菜单安装：⋮ → 添加到主屏幕');closeMobileMenu();}
+}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(e){console.log('SW failed',e);});}
 </script>
 </body>
 </html>
