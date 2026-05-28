@@ -248,8 +248,8 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 
   .modal{max-width:100vw;max-height:100vh;border-radius:0;width:100%}
   .modal-header{border-radius:0;padding:16px 16px}
-  .modal-header .close,.drawer-header .close{width:auto;height:auto;padding:6px 14px;border-radius:6px;font-size:0}
-  .modal-header .close::before,.drawer-header .close::before{content:'← 返回';font-size:13px}
+  .modal-header .back-btn{display:inline!important;background:none;border:none;color:var(--accent);font-size:14px;cursor:pointer;padding:4px 8px;flex-shrink:0}
+  .modal-header .close{width:auto;height:auto;padding:6px 12px;border-radius:6px;font-size:13px}
 
   .time-divider{margin:10px 0;font-size:10px}
   .time-divider span{background:rgba(0,0,0,.04);color:#aaa}
@@ -1595,6 +1595,25 @@ function copyCode(btn){const code=btn.parentElement.querySelector('code');naviga
 $input.addEventListener('input',()=>{$input.style.height='auto';$input.style.height=Math.min($input.scrollHeight,100)+'px';});
 document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.key==='k'){e.preventDefault();toggleSidebar();}if(e.ctrlKey&&e.key==='f'&&e.ctrlKey){e.preventDefault();openSearch();}if(e.ctrlKey&&e.key==='p'){e.preventDefault();openPersona();}});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){data.lastActive=Date.now();saveData(data);}});
+
+// 手机端：给弹窗/抽屉加返回按钮
+function ensureBackButton(header, closeFn){
+  if(window.innerWidth>768)return;
+  if(!header||header.querySelector('.back-btn'))return;
+  var btn=document.createElement('button');
+  btn.className='back-btn';btn.textContent='← 返回';
+  btn.onclick=closeFn;
+  header.insertBefore(btn,header.firstChild);
+}
+
+// 重写打开函数，附带返回按钮
+var _openPersona=openPersona;openPersona=function(){_openPersona();ensureBackButton(document.querySelector('#personaModal .modal-header'),closePersona);};
+var _openAvatarPicker=openAvatarPicker;openAvatarPicker=function(){_openAvatarPicker();ensureBackButton(document.querySelector('#avatarModal .modal-header'),closeAvatarPicker);};
+var _openSettings=openSettings;openSettings=function(){_openSettings();ensureBackButton(document.querySelector('#settingsModal .modal-header'),closeSettings);};
+var _openSearch=openSearch;openSearch=function(){_openSearch();ensureBackButton(document.querySelector('#searchModal .modal-header'),closeSearch);};
+var _openMemoryManager=openMemoryManager;openMemoryManager=function(){_openMemoryManager();ensureBackButton(document.querySelector('#memoryModal .modal-header'),closeMemoryManager);};
+var _openSessions=openSessions;openSessions=function(){_openSessions();ensureBackButton(document.querySelector('.drawer-header'),closeSessions);};
+var _openCropModal=openCropModal;openCropModal=function(t,s){_openCropModal(t,s);ensureBackButton(document.querySelector('#cropModal .modal-header'),closeCropModal);};
 
 // ==================== 初始化 ====================
 (async function init(){
