@@ -1613,6 +1613,7 @@ var _openSettings=openSettings;openSettings=function(){_openSettings();ensureBac
 var _openSearch=openSearch;openSearch=function(){_openSearch();ensureBackButton(document.querySelector('#searchModal .modal-header'),closeSearch);};
 var _openMemoryManager=openMemoryManager;openMemoryManager=function(){_openMemoryManager();ensureBackButton(document.querySelector('#memoryModal .modal-header'),closeMemoryManager);};
 var _openSessions=openSessions;openSessions=function(){_openSessions();ensureBackButton(document.querySelector('.drawer-header'),closeSessions);};
+var _toggleSidebar=toggleSidebar;toggleSidebar=function(){_toggleSidebar();ensureBackButton(document.querySelector('.sidebar-header'),function(){document.getElementById('sidebar').classList.remove('open');});};
 var _openCropModal=openCropModal;openCropModal=function(t,s){_openCropModal(t,s);ensureBackButton(document.querySelector('#cropModal .modal-header'),closeCropModal);};
 
 // ==================== 初始化 ====================
