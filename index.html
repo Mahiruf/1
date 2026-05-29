@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#fcfcf9">
 <meta name="description" content="你的AI女友">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' rx='12' fill='%23f08ca8'/><text x='32' y='44' text-anchor='middle' font-size='36'>💝</text></svg>">
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="https://mahiruf.github.io/1/manifest.json">
 <title>赛博女友</title>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11/styles/atom-one-dark.min.css">
@@ -248,8 +248,9 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 
   .modal{max-width:100vw;max-height:100vh;border-radius:0;width:100%}
   .modal-header{border-radius:0;padding:16px 16px}
-  .modal-header .back-btn{display:inline!important;background:none;border:none;color:var(--accent);font-size:14px;cursor:pointer;padding:4px 8px;flex-shrink:0}
-  .modal-header .close{width:auto;height:auto;padding:6px 12px;border-radius:6px;font-size:13px}
+  .modal-header .close{width:auto;height:auto;padding:8px 16px;border-radius:20px;font-size:14px;color:#666;background:#f0f0f0;border:none;min-width:44px;min-height:44px}
+  .drawer-header .close{width:auto;height:auto;padding:8px 16px;border-radius:20px;font-size:14px;min-width:44px;min-height:44px}
+  .sidebar-close{display:flex!important;width:auto!important;height:auto!important;padding:6px 12px!important;border-radius:20px!important;font-size:13px!important;background:#f0f0f0;color:#666;border:none}
 
   .time-divider{margin:10px 0;font-size:10px}
   .time-divider span{background:rgba(0,0,0,.04);color:#aaa}
@@ -265,7 +266,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 
 <div class="app-wrap">
 <div class="sidebar" id="sidebar">
-  <div class="sidebar-header"><div class="logo">💝</div><h2>赛博女友</h2></div>
+  <div class="sidebar-header"><div class="logo">💝</div><h2>赛博女友</h2><button class="menu-btn sidebar-close" onclick="document.getElementById('sidebar').classList.remove('open')">✕ 关闭</button></div>
   <div class="sidebar-list" id="sidebarList"></div>
   <div class="sidebar-footer"><button onclick="newSession()">＋ 新对话</button></div>
 </div>
@@ -1596,26 +1597,6 @@ function copyCode(btn){const code=btn.parentElement.querySelector('code');naviga
 $input.addEventListener('input',()=>{$input.style.height='auto';$input.style.height=Math.min($input.scrollHeight,100)+'px';});
 document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.key==='k'){e.preventDefault();toggleSidebar();}if(e.ctrlKey&&e.key==='f'&&e.ctrlKey){e.preventDefault();openSearch();}if(e.ctrlKey&&e.key==='p'){e.preventDefault();openPersona();}});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){data.lastActive=Date.now();saveData(data);}});
-
-// 手机端：给弹窗/抽屉加返回按钮
-function ensureBackButton(header, closeFn){
-  if(window.innerWidth>768)return;
-  if(!header||header.querySelector('.back-btn'))return;
-  var btn=document.createElement('button');
-  btn.className='back-btn';btn.textContent='← 返回';
-  btn.onclick=closeFn;
-  header.insertBefore(btn,header.firstChild);
-}
-
-// 重写打开函数，附带返回按钮
-var _openPersona=openPersona;openPersona=function(){_openPersona();ensureBackButton(document.querySelector('#personaModal .modal-header'),closePersona);};
-var _openAvatarPicker=openAvatarPicker;openAvatarPicker=function(){_openAvatarPicker();ensureBackButton(document.querySelector('#avatarModal .modal-header'),closeAvatarPicker);};
-var _openSettings=openSettings;openSettings=function(){_openSettings();ensureBackButton(document.querySelector('#settingsModal .modal-header'),closeSettings);};
-var _openSearch=openSearch;openSearch=function(){_openSearch();ensureBackButton(document.querySelector('#searchModal .modal-header'),closeSearch);};
-var _openMemoryManager=openMemoryManager;openMemoryManager=function(){_openMemoryManager();ensureBackButton(document.querySelector('#memoryModal .modal-header'),closeMemoryManager);};
-var _openSessions=openSessions;openSessions=function(){_openSessions();ensureBackButton(document.querySelector('.drawer-header'),closeSessions);};
-var _toggleSidebar=toggleSidebar;toggleSidebar=function(){_toggleSidebar();ensureBackButton(document.querySelector('.sidebar-header'),function(){document.getElementById('sidebar').classList.remove('open');});};
-var _openCropModal=openCropModal;openCropModal=function(t,s){_openCropModal(t,s);ensureBackButton(document.querySelector('#cropModal .modal-header'),closeCropModal);};
 
 // ==================== 初始化 ====================
 (async function init(){
